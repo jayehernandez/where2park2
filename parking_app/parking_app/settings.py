@@ -11,9 +11,11 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
+import dj_database_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+PROJECT_ROOT =os.path.dirname(os.path.abspath(__file__))
 
 
 # Quick-start development settings - unsuitable for production
@@ -25,7 +27,7 @@ SECRET_KEY = '9+4sd6_tqa8e17wk$u@*0%%0c2!z5-fzbzle!9=g(4r#rqaol@'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -37,14 +39,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'parking_lots',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -54,7 +57,7 @@ ROOT_URLCONF = 'parking_app.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR,"templates")],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -74,10 +77,11 @@ WSGI_APPLICATION = 'parking_app.wsgi.application'
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+    'default' : dj_database_url.config(default='postgres://japrezxokluzap:a0da71c665870411da3cc93165f492078ab30cf54af85401d7badf3ab23ca46f@ec2-54-235-248-197.compute-1.amazonaws.com:5432/d2kc44ls357ck7')
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    # }
 }
 
 
@@ -105,7 +109,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Hongkong'
 
 USE_I18N = True
 
@@ -118,3 +122,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATIC_ROOT = os.path.join(PROJECT_ROOT, "staticfiles")
+STATICFILES_DIRS = [os.path.join(PROJECT_ROOT, 'static'),]
+STATIC_URL = '/static/'
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(PROJECT_ROOT, "media_cdn")
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
